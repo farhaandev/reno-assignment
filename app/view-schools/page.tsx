@@ -35,7 +35,7 @@ export default async function ShowSchools() {
               name: school.name,
               address: school.address,
               city: school.city,
-              image: school.image || "/placeholder.jpg",
+              image: school.image || "/placeholder.png",
             }}
           />
         ))}
