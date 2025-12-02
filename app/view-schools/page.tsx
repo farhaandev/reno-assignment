@@ -1,6 +1,8 @@
 import SchoolCard from "../components/SchoolCard";
 import { prisma } from "../lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function ShowSchools() {
 
   const schools = await prisma.school.findMany({
