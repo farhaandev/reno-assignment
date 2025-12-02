@@ -16,7 +16,7 @@ export default async function ShowSchools() {
 
   if (schools.length == 0) {
     return (
-      <p className="mt-4 text-gray-600 pt-32 text-center">
+      <p className="mt-4 text-gray-600 pt-32 text-center px-6">
         No schools found yet. Add one using &quot;Add School&quot;.
       </p>
     );
