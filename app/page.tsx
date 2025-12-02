@@ -31,8 +31,8 @@ export default function Home() {
       <footer className="mt-10 text-gray-500 text-sm w-full text-center ">
         <div className="absolute bottom-3 left-1/2 right-1/2 transform -translate-1/2 w-full space-y-1">
           <p>Assignment Project - Made by Farhaan</p>
-          <Link href="https://github.com/farhaandev" target="_blank" className="text-cyan-600">
-           Github
+          <Link href="https://github.com/farhaandev/reno-assignment" target="_blank" className="text-cyan-600">
+           Github Link
           </Link>
         </div>
       </footer>
