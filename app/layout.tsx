@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import "./globals.css";
 
 export const metadata = {
-  title: "School Platform",
+  title: "Reno - A School Platform",
   description: "Add and view schools",
 };
 

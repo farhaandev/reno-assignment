@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type SchoolFormData = {
@@ -8,19 +10,43 @@ type SchoolFormData = {
   state: string;
   contact: string;
   email_id: string;
-  image: FileList;
+  image: string; // FileList Not now, we'll keep it simple string
 };
 
 export default function SchoolForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    reset,
   } = useForm<SchoolFormData>();
 
-  const onSubmit = (data: SchoolFormData) => {
-    console.log(data);
-    alert("UI form submitted! Backend coming next.");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const router = useRouter();
+
+  const onSubmit = async (data: SchoolFormData) => {
+    try {
+      setErrorMsg(null);
+
+      const res = await fetch("/api/schools", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || "Failed to add school.");
+      }
+
+      reset();
+      router.push("/view-schools");
+    } catch (error: any) {
+      console.error(error);
+      setErrorMsg(error.message || "Something went wrong.")
+    }
   };
 
   return (
@@ -93,18 +119,20 @@ export default function SchoolForm() {
       <div>
         <label className="block mb-1 font-medium">School Image</label>
         <input
-          type="file"
+          type="text"
           accept="image/*"
           {...register("image", { required: true })}
           className="w-full border border-gray-300 focus:outline-cyan-600 rounded px-3 py-2"
         />
       </div>
 
+      {errorMsg && <p className="text-red-600 text-sm">{errorMsg}</p>}
+
       <button
         type="submit"
         className="w-full bg-cyan-700 text-white py-2 rounded hover:bg-cyan-600"
       >
-        Submit
+        {isSubmitting ? "Submitting..." : "Add School"}
       </button>
     </form>
   );
