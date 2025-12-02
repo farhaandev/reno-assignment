@@ -12,7 +12,7 @@ export default function SchoolCard({ school }: SchoolProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-300 hover:shadow-md transition overflow-hidden">
       <img
-        src={`${school.image}`}
+        src={school.image}
         alt={school.name}
         className="h-48 w-full object-cover"
       />

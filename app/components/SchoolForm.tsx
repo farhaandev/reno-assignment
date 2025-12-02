@@ -10,7 +10,7 @@ type SchoolFormData = {
   state: string;
   contact: string;
   email_id: string;
-  image: string; // FileList Not now, we'll keep it simple string
+  image: FileList;
 };
 
 export default function SchoolForm() {
@@ -28,26 +28,33 @@ export default function SchoolForm() {
     try {
       setErrorMsg(null);
 
-      const res = await fetch("/api/schools", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      // Create form data to send including the file
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("address", data.address);
+      formData.append("city", data.city);
+      formData.append("state", data.state);
+      formData.append("contact", data.contact);
+      formData.append("email_id", data.email_id);
 
-      const json = await res.json();
-      if (!res.ok) {
-        throw new Error(json.error || "Failed to add school.");
+      if (data.image && data.image.length > 0) {
+        formData.append("image", data.image[0]);
       }
 
-      reset();
+      const res = await fetch("/api/schools", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Failed to add school");
+
       router.push("/view-schools");
+      reset();
     } catch (error: any) {
-      console.error(error);
-      setErrorMsg(error.message || "Something went wrong.")
+      setErrorMsg(error.message);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -119,7 +126,7 @@ export default function SchoolForm() {
       <div>
         <label className="block mb-1 font-medium">School Image</label>
         <input
-          type="text"
+          type="file"
           accept="image/*"
           {...register("image", { required: true })}
           className="w-full border border-gray-300 focus:outline-cyan-600 rounded px-3 py-2"
